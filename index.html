@@ -3,14 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация через Telegram</title>
+    <title>Очки пользователя</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>Вход через Telegram</h1>
-<script src="https://telegram.org/js/telegram-widget.js?2"
-        data-telegram-login="ippach_bot"
-        data-size="large"
-        data-auth-url="https://youtube.com"
-        data-request-access="write"></script>
+<h1>Ваши очки: <span id="points">0</span></h1>
+<button onclick="addPoints()">Нажми меня!</button>
+
+<script>
+    async function addPoints() {
+        const response = await fetch('update_points.php', { method: 'POST' });
+        const data = await response.json();
+        document.getElementById('points').innerText = data.points;
+    }
+
+    // Получаем текущие очки при загрузке страницы
+    async function getPoints() {
+        const response = await fetch('get_points.php');
+        const data = await response.json();
+        document.getElementById('points').innerText = data.points;
+    }
+
+    getPoints();
+</script>
 </body>
 </html>
